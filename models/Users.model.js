@@ -10,7 +10,6 @@ const userSchema = new mongoose.Schema({
         lowercase: true,
         trim: true,
         match: [/^[a-z ,.'-]+$/i, "Name contains invalid characters"],
-        //index: true,
     },
     surname: {
         type: String,
@@ -20,7 +19,6 @@ const userSchema = new mongoose.Schema({
         lowercase: true,
         trim: true,
         match: [/^[a-z ,.'-]+$/i, "Surname contains invalid characters"],
-        //index: true,
     },
     email: {
         type: String,
