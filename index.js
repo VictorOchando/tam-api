@@ -12,7 +12,7 @@ mongoose.set("useCreateIndex", true);
 mongoose.connect(process.env.MONGO_CONNECT, () => console.log("DB connected"));
 
 //Routes
-const authRoute = require("./routes/auth");
+const authRoute = require("./routes/auth.router");
 
 //Middlewares
 app.use(express.json());
