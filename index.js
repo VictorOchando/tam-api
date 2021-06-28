@@ -13,8 +13,9 @@ mongoose.set("useFindAndModify", false);
 mongoose.connect(process.env.MONGO_CONNECT, () => console.log("DB connected"));
 
 //Routes
-const authRoute = require("./routes/auth.router");
-const customersRoute = require("./routes/customer.router");
+const authRoute = require("./routers/auth.router");
+const customersRoute = require("./routers/customer.router");
+const usersRoute = require("./routers/users.router");
 
 //Middlewares
 app.use(express.json());
@@ -22,5 +23,6 @@ app.use(express.json());
 //Route Middlewares
 app.use("/", authRoute);
 app.use("/customers", customersRoute);
+app.use("/users", usersRoute);
 
 app.listen(3000, () => console.log("Server listening on port 3000"));

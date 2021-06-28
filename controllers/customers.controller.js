@@ -19,8 +19,8 @@ async function createCustomer(req, res) {
 async function getAllCustomers(req, res) {
     try {
         let customers = await Customer.find()
-            .populate("createdBy")
-            .populate("modifiedBy");
+            .populate("createdBy", "name surname")
+            .populate("modifiedBy", "name surname");
         res.send(customers);
     } catch (err) {
         res.status(500).send(err.message);
@@ -29,8 +29,10 @@ async function getAllCustomers(req, res) {
 
 async function getCustomerById(req, res) {
     try {
-        let customer = await Customer.findById(req.params.id);
-        if (customer) res.send(customer);
+        let customer = await Customer.findById(req.params.id)
+            .populate("createdBy", "name surname")
+            .populate("modifiedBy", "name surname");
+        if (customer) return res.send(customer);
 
         res.status(404).send("Customer not found");
     } catch (err) {
@@ -55,7 +57,6 @@ async function editCustomer(req, res) {
 
 async function deleteCustomer(req, res) {
     try {
-        console.log("dentro");
         let customer = await Customer.findByIdAndDelete(req.params.id);
         if (customer) return res.send(customer);
         res.status(404).send("Customer not found");
