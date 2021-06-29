@@ -9,7 +9,6 @@ const customerSchema = new mongoose.Schema({
         lowercase: true,
         match: [/^[a-z ,.'-]+$/i, "Name contains invalid characters"],
         trim: true,
-        //index: true,
     },
     surname: {
         type: String,
@@ -23,11 +22,11 @@ const customerSchema = new mongoose.Schema({
     photo: {
         type: String,
         required: false,
-        maxlength: [200, "Photo url too long"],
+        maxlength: [250, "Photo url too long"],
         trim: true,
     },
     createdBy: {
-        type: mongoose.Types.ObjectId,
+        type: mongoose.Schema.Types.Mixed,
         ref: "User",
         required: true,
     },

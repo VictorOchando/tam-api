@@ -1,4 +1,10 @@
-const Customer = require("../models/customers.model");
+const Customer = require("../models/customers");
+const {
+    uploadFile,
+    removeTemporaryFile,
+    deleteFromS3,
+} = require("../tools/s3");
+var authorizedMimeTypes = ["image/jpg", "image/jpeg", "image/png"];
 
 async function createCustomer(req, res) {
     const customer = new Customer({
@@ -7,12 +13,27 @@ async function createCustomer(req, res) {
         photo: req.body.photo,
         createdBy: req.user._id,
     });
+    const file = req.file;
 
     try {
         const savedCustomer = await customer.save();
-        res.send(savedCustomer.populate("createdBy"));
+
+        if (file && savedCustomer) {
+            savedCustomer.photo = await uploadFile(
+                file,
+                savedCustomer._id.toString()
+            );
+            savedCustomer.save();
+        }
+
+        let populatedCostumer = await savedCustomer
+            .populate("createdBy", "name surname")
+            .execPopulate();
+
+        res.send(populatedCostumer);
     } catch (err) {
-        res.status(400).send(err);
+        if (file) removeTemporaryFile(file);
+        res.status(400).send(err.message);
     }
 }
 
@@ -36,21 +57,36 @@ async function getCustomerById(req, res) {
 
         res.status(404).send("Customer not found");
     } catch (err) {
-        res.status(400).send(err.message);
+        res.status(500).send(err.message);
     }
 }
 
 async function editCustomer(req, res) {
+    req.body.modifiedBy = req.user._id;
+    const file = req.file;
+
     try {
-        req.body.modifiedBy = req.user._id;
         let customer = await Customer.findByIdAndUpdate(
             req.params.id,
             req.body,
             { runValidators: true, new: true }
         );
-        if (customer) return res.send(customer);
+
+        if (customer) {
+            if (file) {
+                customer.photo = await uploadFile(file, req.params.id);
+                customer.save();
+            }
+            let populatedCostumer = await customer
+                .populate("createdBy", "name surname")
+                .populate("modifiedBy", "name surname")
+                .execPopulate();
+            return res.send(populatedCostumer);
+        }
+
         res.status(404).send("Customer not found");
     } catch (err) {
+        if (file) removeTemporaryFile(file);
         res.status(400).send(err.message);
     }
 }
@@ -58,11 +94,22 @@ async function editCustomer(req, res) {
 async function deleteCustomer(req, res) {
     try {
         let customer = await Customer.findByIdAndDelete(req.params.id);
-        if (customer) return res.send(customer);
+        if (customer) {
+            deleteFromS3(req.params.id);
+            return res.send(customer);
+        }
         res.status(404).send("Customer not found");
     } catch (err) {
         res.status(400).send(err.message);
     }
+}
+
+async function deletedUser(user) {
+    await Customer.updateMany(
+        { createdBy: user._id },
+        { $set: { createdBy: { name: user.name, surname: user.surname } } },
+        { runValidators: false, new: true }
+    );
 }
 
 module.exports = {
@@ -71,4 +118,5 @@ module.exports = {
     getCustomerById,
     editCustomer,
     deleteCustomer,
+    deletedUser,
 };

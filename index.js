@@ -13,9 +13,9 @@ mongoose.set("useFindAndModify", false);
 mongoose.connect(process.env.MONGO_CONNECT, () => console.log("DB connected"));
 
 //Routes
-const authRoute = require("./routers/auth.router");
-const customersRoute = require("./routers/customer.router");
-const usersRoute = require("./routers/users.router");
+const authRoute = require("./routers/auth");
+const customersRoute = require("./routers/customer");
+const usersRoute = require("./routers/users");
 
 //Middlewares
 app.use(express.json());
