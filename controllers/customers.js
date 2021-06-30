@@ -104,14 +104,6 @@ async function deleteCustomer(req, res) {
     }
 }
 
-async function deletedUser(user) {
-    await Customer.updateMany(
-        { createdBy: user._id },
-        { $set: { createdBy: { name: user.name, surname: user.surname } } },
-        { runValidators: false, new: true }
-    );
-}
-
 module.exports = {
     createCustomer,
     getAllCustomers,

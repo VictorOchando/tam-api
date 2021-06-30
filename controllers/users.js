@@ -1,5 +1,4 @@
 const User = require("../models/users");
-const { deletedUser } = require("./customers");
 const bcrypt = require("bcryptjs");
 const {
     uploadFile,
@@ -95,11 +94,8 @@ async function editUser(req, res) {
 async function deleteUser(req, res) {
     try {
         let user = await User.findByIdAndDelete(req.params.id);
-        //find customers createdby y cambiar por { name: user.name, surname: user.surname }
-        //find customers modifiedby y cambiar por { name: user.name, surname: user.surname }
 
         if (user) {
-            deletedUser(user);
             deleteFromS3(req.params.id);
             user.toObject();
             delete user.password;
