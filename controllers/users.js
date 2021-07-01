@@ -19,6 +19,7 @@ async function createUser(req, res) {
         email: req.body.email,
         password: hashedPassword,
         photo: req.body.photo,
+        role: req.body.role,
     });
     const file = req.file;
     try {

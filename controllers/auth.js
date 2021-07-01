@@ -20,7 +20,10 @@ async function login(req, res) {
 
         const token = jwt.sign(
             { _id: user._id, role: user.role },
-            process.env.JWT_SECRET
+            process.env.JWT_SECRET,
+            {
+                expiresIn: process.env.JWT_EXPIRES_IN,
+            }
         );
         res.header("auth-token", token).send(token);
     } catch (err) {

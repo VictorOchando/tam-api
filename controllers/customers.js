@@ -4,7 +4,6 @@ const {
     removeTemporaryFile,
     deleteFromS3,
 } = require("../tools/s3");
-var authorizedMimeTypes = ["image/jpg", "image/jpeg", "image/png"];
 
 async function createCustomer(req, res) {
     const customer = new Customer({
@@ -110,5 +109,4 @@ module.exports = {
     getCustomerById,
     editCustomer,
     deleteCustomer,
-    deletedUser,
 };
