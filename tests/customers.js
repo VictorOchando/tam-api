@@ -22,7 +22,7 @@ var isValidCustomers = function (res) {
     res.body[0].should.have.property("createdBy");
 };
 
-const exampleUser = {
+const exampleCustomer = {
     name: "example",
     surname: "customer",
 };
@@ -69,7 +69,7 @@ describe("/post /customers", () => {
         request(app)
             .post("/customers/")
             .set("auth-token", process.env.TEST_TOKEN)
-            .send(exampleUser)
+            .send(exampleCustomer)
             .expect("Content-Type", /json/)
             .end((err, res) => {
                 if (err) throw err;
@@ -133,16 +133,16 @@ describe("/patch /customers", () => {
     it("unauthorized customer", (done) => {
         request(app)
             .patch("/customers/" + testingId)
-            .send(exampleUser)
+            .send(exampleCustomer)
             .expect("Content-Type", /html/)
             .expect(401, done);
     });
 
     it("respond with a non existant customer", (done) => {
         request(app)
-            .patch("/customers/60dba7a66ea10b54d4c89ef2")
+            .patch("/customers/60dd9386b680314b5ce2c615")
             .set("auth-token", process.env.TEST_TOKEN)
-            .send(exampleUser)
+            .send(exampleCustomer)
             .expect("Content-Type", /html/)
             .expect(404, done);
     });
@@ -166,7 +166,7 @@ describe("/patch /customers", () => {
         request(app)
             .patch("/customers/" + testingId)
             .set("auth-token", process.env.TEST_TOKEN)
-            .send(exampleUser)
+            .send(exampleCustomer)
             .expect("Content-Type", /json/)
             .end((err, res) => {
                 if (err) throw err;

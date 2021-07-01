@@ -27,7 +27,7 @@ var isValidUsers = function (res) {
 const exampleUser = {
     name: "example",
     surname: "user",
-    email: "aaa@gmail.com",
+    email: "aaa5@gmail.com",
     password: "1234",
     role: "user",
 };
@@ -185,7 +185,7 @@ describe("/patch /users", () => {
             .set("auth-token", process.env.TEST_TOKEN)
             .send(exampleUser)
             .expect("Content-Type", /html/)
-            .expect(400, done);
+            .expect(404, done);
     });
     it("respond with invalid user (number in name)", (done) => {
         request(app)

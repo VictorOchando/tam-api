@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "set NODE_ENV_TEST=1&& mocha tests/customers.js tests/users.js --exit",
+    "test": "set NODE_ENV_TEST=1&& mocha tests/auth.js tests/customers.js tests/users.js -R min --exit",
     "start": "set NODE_ENV_TEST=0&& node index.js"
   },
   "keywords": [],

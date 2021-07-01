@@ -66,7 +66,7 @@ async function editUser(req, res) {
             const hashedPassword = await bcrypt.hash(req.body.password, salt);
             req.body.password = hashedPassword;
         }
-        //RUN VALIDATORS
+
         let user = await User.findByIdAndUpdate(req.params.id, req.body, {
             runValidators: true,
             new: true,
@@ -88,7 +88,14 @@ async function editUser(req, res) {
         res.status(404).send("User not found");
     } catch (err) {
         if (file) removeTemporaryFile(file);
-        res.status(400).send(err.message);
+        //Required because it checks unique email property before checking if id exists.
+        //Not ideal but should also be a strange case
+        let userFound = await User.findById(req.params.id);
+        if (!userFound) {
+            return res.status(404).send("User not found");
+        } else {
+            res.status(400).send(err.message);
+        }
     }
 }
 

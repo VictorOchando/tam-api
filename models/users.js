@@ -9,6 +9,7 @@ const userSchema = new mongoose.Schema({
         maxlength: [60, "Name too long"],
         lowercase: true,
         trim: true,
+        index: true,
         match: [/^[a-z ,.'-]+$/i, "Name contains invalid characters"],
     },
     surname: {
@@ -18,6 +19,7 @@ const userSchema = new mongoose.Schema({
         maxlength: [60, "Surname too long"],
         lowercase: true,
         trim: true,
+        index: true,
         match: [/^[a-z ,.'-]+$/i, "Surname contains invalid characters"],
     },
     email: {
@@ -54,8 +56,6 @@ const userSchema = new mongoose.Schema({
     },
 });
 
-//compound index for better performance
-userSchema.index({ name: 1, surname: 1 });
 userSchema.plugin(uniqueValidator);
 
 module.exports = mongoose.model("User", userSchema);

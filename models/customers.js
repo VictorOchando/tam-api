@@ -7,6 +7,7 @@ const customerSchema = new mongoose.Schema({
         minlength: [1, "Name too short"],
         maxlength: [60, "Name too long"],
         lowercase: true,
+        index: true,
         match: [/^[a-z ,.'-]+$/i, "Name contains invalid characters"],
         trim: true,
     },
@@ -16,6 +17,7 @@ const customerSchema = new mongoose.Schema({
         minlength: [1, "Surname too short"],
         maxlength: [60, "Surname too long"],
         lowercase: true,
+        index: true,
         match: [/^[a-z ,.'-]+$/i, "Surname contains invalid characters"],
         trim: true,
     },
@@ -36,7 +38,5 @@ const customerSchema = new mongoose.Schema({
         required: false,
     },
 });
-//compound index for better performance
-customerSchema.index({ name: 1, surname: 1 });
 
 module.exports = mongoose.model("Customer", customerSchema);

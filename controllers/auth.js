@@ -31,4 +31,28 @@ async function login(req, res) {
     }
 }
 
-module.exports = { login };
+async function register(req, res) {
+    if (req.body.registerPassword != process.env.REGISTER_PASSWORD)
+        return res.status(400).send("Invalid register password");
+    const user = new User({
+        name: req.body.name,
+        surname: req.body.surname,
+        email: req.body.email,
+        password: req.body.password,
+        role: req.body.role,
+        photo: req.body.photo,
+    });
+
+    try {
+        const savedUser = await user.save();
+        savedUser.toObject();
+        delete savedUser.password;
+        res.send(savedUser);
+    } catch (err) {
+        {
+            res.status(400).send(err);
+        }
+    }
+}
+
+module.exports = { login, register };
