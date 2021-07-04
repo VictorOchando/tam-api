@@ -12,7 +12,7 @@ async function createUser(req, res) {
     }
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(req.body.password, salt);
-    //MRIAR DE METER CON ...
+
     const user = new User({
         name: req.body.name,
         surname: req.body.surname,

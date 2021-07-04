@@ -83,7 +83,6 @@ describe("/get /customers", () => {
     it("unauthorized customer", (done) => {
         request(app)
             .get("/customers")
-            //.set("auth-token", process.env.TEST_TOKEN)
             .expect("Content-Type", /html/)
             .expect(401, done);
     });
@@ -104,7 +103,6 @@ describe("/get /customers/:id", () => {
     it("unauthorized customer", (done) => {
         request(app)
             .get("/customers/" + testingId)
-            //.set("auth-token", process.env.TEST_TOKEN)
             .expect("Content-Type", /html/)
             .expect(401, done);
     });

@@ -101,7 +101,6 @@ describe("/get /users", () => {
     it("respond with user not logged in", (done) => {
         request(app)
             .get("/users")
-            //.set("auth-token", process.env.TEST_TOKEN)
             .expect("Content-Type", /html/)
             .expect(401, done);
     });
@@ -133,7 +132,6 @@ describe("/get /users/:id", () => {
     it("respond with user not logged in", (done) => {
         request(app)
             .get("/users/" + testingId)
-            //.set("auth-token", process.env.TEST_TOKEN)
             .expect("Content-Type", /html/)
             .expect(401, done);
     });
