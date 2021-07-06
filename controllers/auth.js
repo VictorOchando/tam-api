@@ -50,8 +50,8 @@ async function register(req, res) {
     });
 
     try {
-        const savedUser = await user.save();
-        savedUser.toObject();
+        let savedUser = await user.save();
+        savedUser = savedUser.toObject();
         delete savedUser.password;
         res.send(savedUser);
     } catch (err) {
