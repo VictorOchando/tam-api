@@ -43,7 +43,7 @@ describe("/post /register", () => {
                 role: "admin",
                 registerPassword: process.env.REGISTER_PASSWORD,
             })
-            .expect("Content-Type", /json/)
+            .expect("Content-Type", /html/)
             .end((err, res) => {
                 if (err) throw err;
                 res.status.should.be.equal(400);
@@ -96,34 +96,34 @@ describe("/post /register", () => {
     });
 });
 
-// describe("/post /login", () => {
-//     it("respond with incorrect email/username", (done) => {
-//         request(app)
-//             .post("/login")
-//             .send({
-//                 email: "aaa4567@gmail.com",
-//                 password: "12",
-//             })
-//             .expect("Content-Type", /html/)
-//             .end((err, res) => {
-//                 if (err) throw err;
-//                 res.status.should.be.equal(400);
-//                 done();
-//             });
-//     });
+describe("/post /login", () => {
+    it("respond with incorrect email/username", (done) => {
+        request(app)
+            .post("/login")
+            .send({
+                email: "aaa4567@gmail.com",
+                password: "12",
+            })
+            .expect("Content-Type", /html/)
+            .end((err, res) => {
+                if (err) throw err;
+                res.status.should.be.equal(404);
+                done();
+            });
+    });
 
-//     it("respond with token after succesful login", (done) => {
-//         request(app)
-//             .post("/login")
-//             .send({
-//                 email: "aaa@gmail.com",
-//                 password: "1234",
-//             })
-//             .expect("Content-Type", /json/)
-//             .end((err, res) => {
-//                 if (err) throw err;
-//                 res.status.should.be.equal(200);
-//                 done();
-//             });
-//     });
-// });
+    it("respond with token after succesful login", (done) => {
+        request(app)
+            .post("/login")
+            .send({
+                email: "aaa@gmail.com",
+                password: "1234",
+            })
+            .expect("Content-Type", /html/)
+            .end((err, res) => {
+                if (err) throw err;
+                res.status.should.be.equal(200);
+                done();
+            });
+    });
+});

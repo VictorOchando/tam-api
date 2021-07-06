@@ -34,11 +34,17 @@ async function login(req, res) {
 async function register(req, res) {
     if (req.body.registerPassword != process.env.REGISTER_PASSWORD)
         return res.status(400).send("Invalid register password");
+
+    if (!req.body.password) return res.status(400).send("Password is needed");
+
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(req.body.password, salt);
+
     const user = new User({
         name: req.body.name,
         surname: req.body.surname,
         email: req.body.email,
-        password: req.body.password,
+        password: hashedPassword,
         role: req.body.role,
         photo: req.body.photo,
     });
