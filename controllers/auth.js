@@ -32,7 +32,10 @@ async function login(req, res) {
 }
 
 async function register(req, res) {
-    if (req.body.registerPassword != process.env.REGISTER_PASSWORD)
+    if (
+        req.body.registerPassword != process.env.REGISTER_PASSWORD ||
+        process.env.REGISTER_PASSWORD == null
+    )
         return res.status(400).send("Invalid register password");
 
     if (!req.body.password) return res.status(400).send("Password is needed");
